@@ -1,0 +1,67 @@
+/* Hero Section */
+.hero {
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 150px 20px;
+}
+
+.hero h1 {
+    font-size: 4rem;
+}
+
+/* Botão "Saiba Mais" */
+.btn-light {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 2px solid white;
+}
+
+.btn-light:hover {
+    background-color: white;
+    color: #2db8f8;
+    border-color: #2db8f8;
+}
+
+/* Barra de Navegação */
+.navbar-nav .nav-link {
+    color: #fff !important;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #2db8f8 !important;
+}
+
+.navbar-brand {
+    color: #fff !important;
+}
+
+.navbar-brand:hover {
+    color: #2db8f8 !important;
+}
+
+footer {
+    background-color: #343a40;
+    /* Fundo escuro */
+    color: #f8f9fa;
+    /* Texto claro */
+}
+
+footer .fa-2x {
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+footer .fa-2x:hover {
+    transform: scale(1.2);
+    /* Efeito de zoom nos ícones */
+    color: #2db8f8;
+    /* Cor de destaque ao passar o mouse */
+}
+
+footer a {
+    text-decoration: none;
+    /* Remove o sublinhado */
+}
+
+footer p {
+    margin: 0;
+}

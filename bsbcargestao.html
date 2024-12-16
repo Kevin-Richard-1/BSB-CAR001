@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSB Car - Gestão</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: black;
+        }
+
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .alert {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">BSB Car - Sistema de Gestão</h1>
+        <!-- Tela de Login -->
+        <div id="loginContainer" class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <form id="loginForm">
+                            <h3 class="text-center">Login</h3>
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Usuário</label>
+                                <input type="text" class="form-control" id="username" placeholder="Digite seu usuário"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Senha</label>
+                                <input type="password" class="form-control" id="password" placeholder="Digite sua senha"
+                                    required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Entrar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Painel Administrativo -->
+        <div id="dashboard" class="d-none">
+            <h2 class="text-center">Painel Administrativo</h2>
+
+            <!-- Formulário para Adicionar Clientes -->
+            <div id="clientFormContainer" class="mt-5">
+                <h3>Adicionar Cliente</h3>
+                
+
+            <!-- Cards para Acesso -->
+            <div class="row text-center mt-4">
+                <div class="col-md-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Orçamentos</h5>
+                            <p class="card-text">Gerenciar orçamentos pendentes e concluídos.</p>
+                            <button class="btn btn-primary" id="manageBudgets"><i
+                                    class="fas fa-file-invoice-dollar"></i> Acessar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Serviços</h5>
+                            <p class="card-text">Acompanhe e registre os serviços realizados.</p>
+                            <button class="btn btn-primary" id="manageServices"><i class="fas fa-tools"></i>
+                                Acessar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Relatórios</h5>
+                            <p class="card-text">Visualize o desempenho financeiro e operacional.</p>
+                            <button class="btn btn-primary" id="viewReports"><i class="fas fa-chart-line"></i>
+                                Acessar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Clientes</h5>
+                            <p class="card-text">Gerencie os dados dos clientes.</p>
+                            <button class="btn btn-primary" id="manageClients"><i class="fas fa-user"></i>
+                                Acessar</button><form id="clientForm">
+                                    <div class="mb-3">
+                                        <label for="clientName" class="form-label">Nome</label>
+                                        <input type="text" class="form-control" id="clientName" placeholder="Nome do cliente" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="clientPhone" class="form-label">Telefone</label>
+                                        <input type="text" class="form-control" id="clientPhone" placeholder="Telefone do cliente" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="clientEmail" class="form-label">E-mail</label>
+                                        <input type="email" class="form-control" id="clientEmail" placeholder="E-mail do cliente" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="clientCpf" class="form-label">CPF</label>
+                                        <input type="text" class="form-control" id="clientCpf" placeholder="CPF do cliente" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Adicionar Cliente</button>
+                                    <ul id="clientList" class="list-group mt-4"></ul>
+                                </form>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <button class="btn btn-danger" id="logout"><i class="fas fa-sign-out-alt"></i> Sair</button>
+            </div>
+        </div>
+
+        <!-- Gerenciamento de Orçamentos -->
+        <div id="budgetsSection" class="d-none">
+            <h2 class="text-center">Gerenciamento de Orçamentos</h2>
+            <button class="btn btn-secondary mb-3" id="backToDashboard1">Voltar</button>
+            <form id="budgetForm" class="mb-3">
+                <div class="mb-3">
+                    <label for="budgetDescription" class="form-label">Descrição</label>
+                    <input type="text" id="budgetDescription" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="budgetValue" class="form-label">Valor</label>
+                    <input type="number" id="budgetValue" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Adicionar Orçamento</button>
+            </form>
+            <ul id="budgetList" class="list-group"></ul>
+        </div>
+
+        <!-- Gerenciamento de Serviços -->
+        <div id="servicesSection" class="d-none">
+            <h2 class="text-center">Gerenciamento de Serviços</h2>
+            <button class="btn btn-secondary mb-3" id="backToDashboard2">Voltar</button>
+            <form id="serviceForm" class="mb-3">
+                <div class="mb-3">
+                    <label for="serviceDescription" class="form-label">Descrição</label>
+                    <input type="text" id="serviceDescription" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="serviceCategory" class="form-label">Categoria</label>
+                    <select id="serviceCategory" class="form-select" required>
+                        <option value="Lanternagem">Lanternagem</option>
+                        <option value="Pintura">Pintura</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="serviceStatus" class="form-label">Status</label>
+                    <select id="serviceStatus" class="form-select" required>
+                        <option value="Pendente">Pendente</option>
+                        <option value="Concluído">Concluído</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Adicionar Serviço</button>
+            </form>
+            <ul id="serviceList" class="list-group"></ul>
+        </div>
+
+        <!-- Relatórios -->
+        <div id="reportsSection" class="d-none">
+            <h2 class="text-center">Relatórios</h2>
+            <button class="btn btn-secondary mb-3" id="backToDashboard3">Voltar</button>
+            <div class="text-center">
+                <canvas id="reportsChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+
+        <!-- Alerta de Feedback -->
+        <div class="alert alert-success" id="alertSuccess">Ação realizada com sucesso!</div>
+        <div class="alert alert-danger" id="alertError">Ocorreu um erro. Tente novamente.</div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            const users = [
+                { username: 'admin', password: '1234' },
+                { username: 'kr', password: '1' }
+            ];
+
+            $('#loginForm').on('submit', function (e) {
+                e.preventDefault();
+                const username = $('#username').val();
+                const password = $('#password').val();
+                const user = users.find(user => user.username === username && user.password === password);
+                if (user) {
+                    alert('Login bem-sucedido!');
+                    $('#loginContainer').addClass('d-none');
+                    $('#dashboard').removeClass('d-none');
+                } else {
+                    alert('Usuário ou senha inválidos.');
+                }
+            });
+
+            $('#logout').on('click', function () {
+                $('#dashboard').addClass('d-none');
+                $('#loginContainer').removeClass('d-none');
+                $('#loginForm')[0].reset();
+            });
+
+            const clientList = [];
+            $('#clientForm').on('submit', function (e) {
+                e.preventDefault();
+                const clientName = $('#clientName').val();
+                const clientPhone = $('#clientPhone').val();
+                if (clientName && clientPhone) {
+                    clientList.push({ clientName, clientPhone });
+                    $('#clientList').append(
+                        `<li class="list-group-item">${clientName} - ${clientPhone}</li>`
+                    );
+                    $('#clientForm')[0].reset();
+                    $('#alertSuccess').fadeIn(300).delay(2000).fadeOut(300);
+                } else {
+                    $('#alertError').fadeIn(300).delay(2000).fadeOut(300);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
